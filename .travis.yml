@@ -1,0 +1,24 @@
+language: python
+sudo: required
+services:
+- docker
+
+env:
+  - TESTBOOK=test.yml
+
+before_install:
+  - sudo apt-get update -qq
+
+install:
+  # Install Ansible.
+  - pip install ansible
+  # Install Ansible-Container.
+  - pip install ansible-container[docker]
+
+script:
+  - ansible-container --debug build
+  - ansible-container --debug run
+  - docker images
+  - docker ps -a
+# Run role and ensure it completes successfully.
+  - ansible-playbook -vvv -i tests/inventory tests/$TESTBOOK

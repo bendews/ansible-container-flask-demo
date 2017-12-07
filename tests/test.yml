@@ -1,0 +1,14 @@
+- hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+
+    - name: Attempt to connect to container
+      uri:
+        url: "http://127.0.0.1:8080"
+      register: req
+
+    - assert:
+        that:
+          - "req.status == 200"
+        msg: "Page must return a 200 response"

@@ -1,0 +1,36 @@
+version: "2"
+settings:
+
+  project_name: ansible-container-demo
+
+  conductor:
+    base: ubuntu:xenial  
+
+services:
+  
+  # DB Backend
+  redis:
+    from: "redis"
+    ports:
+      - "6379"
+
+  # Application
+  flask:
+    from: "ubuntu:xenial"
+    roles:
+      - role: flask
+    ports:
+      - "5000"
+    command: ["gunicorn", "--bind", "0.0.0.0:5000", "app:app", "--chdir", "/app"]
+  
+  # Proxy Frontend
+  nginx:
+    from: "ubuntu:xenial"
+    roles:
+      - role: nginx
+        nginx_proxy_host: "flask"
+        nginx_proxy_port: 5000
+        nginx_listen_port: 8080
+    ports:
+      - "8080:8080"
+    command: ["nginx", "-c", "/etc/nginx/nginx_ansible.conf", "-g", "daemon off;"]
