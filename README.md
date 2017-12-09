@@ -2,6 +2,7 @@
 
 # Ansible Container - Flask Demo
 Demo for creating a 3-Tier multi-container Flask app using Ansible Container.
+See the accompanying blog post at [bendews.com](https://bendews.com/posts/hello-world-with-ansible-container/).
 
 ## Requirements
 
